@@ -3,13 +3,13 @@ import { Answers } from '../models/models';
 import { Request, Response, NextFunction } from 'express';
   
 class AnswerController{
-    async create(req: Request, res: Response, next: NextFunction){
+    async create(req: Request, res: Response){
         const {questionId, userId, text, likes} = req.body;
         const answer = await Answers.create({questionId, userId, text, likes});
         return res.json(answer);
     }
     async getAll(req: Request, res: Response, next: NextFunction){
-        let { questionId, userId } = req.query;
+        const { questionId, userId } = req.query;
         let answers;
         try {
             if (!userId && !questionId) {

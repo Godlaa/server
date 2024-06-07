@@ -1,5 +1,5 @@
 import { Questions } from "../models/models";
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
 class QuestionController {
   async create( req: Request, res: Response) {
@@ -9,10 +9,10 @@ class QuestionController {
   }
 
   async getAll(req: Request, res: Response) {
-    let { userId, sectionId, limit, page } = req.query;
-    let page_c = page ? parseInt(page as string) : 1;
-    let limit_c = limit ? parseInt(limit as string) : 9;
-    let offset = page_c * limit_c - limit_c;
+    const { userId, sectionId, limit, page } = req.query;
+    const page_c = page ? parseInt(page as string) : 1;
+    const limit_c = limit ? parseInt(limit as string) : 9;
+    const offset = page_c * limit_c - limit_c;
     let questions;
     if (!userId && !sectionId) {
         questions = await Questions.findAndCountAll({limit, offset});

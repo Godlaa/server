@@ -1,7 +1,7 @@
 import ApiError from '../error/ApiError';
 import { Users } from '../models/models';
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
 interface AuthenticatedRequest extends Request {
@@ -12,10 +12,10 @@ interface AuthenticatedRequest extends Request {
     };
 }
 
-const generateJwt = (id: any, email: any, role: any) => {
+const generateJwt = (id: number, email: string, role: string) => {
     return jwt.sign(
         {id, email, role},
-        process.env.SECRET_KEY,
+        process.env.SECRET_KEY!,
         {expiresIn: '24h'}
     );
 }
@@ -41,22 +41,22 @@ class UserController{
         if(!user){
             return next(ApiError.internal('user not found'));
         }
-        let comparePassword = bcrypt.compareSync(password, user.password);
+        const comparePassword = bcrypt.compareSync(password, user.password);
         if(!comparePassword){
             return next(ApiError.internal('incorrect password'));
         }
         const token = generateJwt(user.id, user.email, user.role);
         return res.json({token});
     }
-    async check(req: AuthenticatedRequest, res: Response, next: NextFunction){
+    async check(req: AuthenticatedRequest, res: Response){
         const token = generateJwt(req.user.id, req.user.email, req.user.role);
         return res.json({token});
     }
-    async getAll(req: Request, res: Response, next: NextFunction){
+    async getAll(req: Request, res: Response){
         const users = await Users.findAll(); 
         return res.json(users);
     }
-    async getOne(req: Request, res: Response, next: NextFunction){
+    async getOne(req: Request, res: Response){
         const {id} = req.params;
         const user
         = await Users.findOne({

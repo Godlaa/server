@@ -1,7 +1,7 @@
 import ApiError from '../error/ApiError';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
-module.exports = function(err: ApiError,req: Request, res : Response) {
+module.exports = function(err: ApiError, res : Response) {
     if(err instanceof ApiError){
         return res.status(err.status).json({message: err.message});
     }

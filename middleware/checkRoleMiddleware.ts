@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { AuthenticatedRequest, User } from './authMiddleware';
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 module.exports = function(role: string) {
     return function (req: AuthenticatedRequest, res: Response, next: NextFunction) {
@@ -13,7 +13,7 @@ module.exports = function(role: string) {
                 return res.status(401).json({message: "Не авторизован"});
             }
             console.log(process.env.SECRET_KEY);
-            const decoded : User = jwt.verify(token, process.env.SECRET_KEY);
+            const decoded : User = jwt.verify(token, process.env.SECRET_KEY!) as User;
             if (decoded.role !== role) {
                 return res.status(403).json({message: "У вас нет доступа"});
             }

@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
 export interface AuthenticatedRequest extends Request {
@@ -24,7 +24,7 @@ module.exports = function (req: AuthenticatedRequest, res: Response, next: NextF
         if (!token) {
             return res.status(401).json({message: "Не авторизован"});
         }
-        const decoded : User = jwt.verify(token, process.env.SECRET_KEY);
+        const decoded : User = jwt.verify(token, process.env.SECRET_KEY!) as User;
         req.user = decoded;
         next();
     } catch (e) {
