@@ -25,19 +25,29 @@ class UserInfoController{
         const users_info = await Users_Personal_info.findAll();
         return res.json(users_info);
     }
-    async getOne(req: Request, res: Response) {
-        const {id} = req.params;
-        const user_info = await Users_Personal_info.findOne(
-            {where: {id}}
-        );
-        return res.json(user_info);
+    async getOne(req: Request, res: Response, next: NextFunction) {
+        try{
+            const {id} = req.params;
+            const user_info = await Users_Personal_info.findOne(
+                {where: {id}}
+            );
+            return res.json(user_info);
+        }
+        catch (e){
+            next(ApiError.badRequest(e as string));
+        }
     }
-    async getOneByUserId(req: Request, res: Response) {
-        const {userId} = req.params;
-        const user_info = await Users_Personal_info.findOne(
-            {where: {userId}}
-        );
-        return res.json(user_info);
+    async getOneByUserId(req: Request, res: Response, next: NextFunction) {
+        try{
+            const {userId} = req.params;
+            const user_info = await Users_Personal_info.findOne(
+                {where: {userId}}
+            );
+            return res.json(user_info);
+        }   
+        catch (e){
+            next(ApiError.badRequest(e as string));
+        }
     }
 
     async delete(req: Request, res: Response) {
