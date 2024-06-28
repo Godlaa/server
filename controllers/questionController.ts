@@ -1,3 +1,4 @@
+import ApiError from "../error/ApiError";
 import { Questions } from "../models/models";
 import { Request, Response } from "express";
 
@@ -55,6 +56,20 @@ class QuestionController {
     const { id } = req.params;
     const question = await Questions.destroy({ where: { id } });
     return res.json(question);
+  }
+
+  async update(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { userId, sectionId, header, markers, is_vip } = req.body;
+      const updated = await Questions.update(
+        { userId, sectionId, header, markers, is_vip },
+        { where: { id } }
+      );
+      return res.json(updated);
+    } catch (e) {
+      ApiError.badRequest(e as string);
+    }
   }
 }
 
