@@ -8,7 +8,7 @@ RUN apk add --no-cache python3 make g++
 COPY package*.json ./
 
 # Установка всех зависимостей внутри контейнера
-RUN npm install
+RUN npm install -g --unsafe-perm
 
 COPY . .
 
