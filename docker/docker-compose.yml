@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   app:
     restart: unless-stopped
@@ -8,6 +8,8 @@ services:
     environment:
       - PG_PORT=5432
       - PG_HOST=db
+      - PG_USER=postgres
+      - PG_DB=web_forum
     networks:
       - dz-net
   db:
@@ -20,6 +22,8 @@ services:
     networks:
       - dz-net
     environment:
+      - PG_USER=postgres
+      - PG_DB=web_forum
       - POSTGRES_PASSWORD=12345
 
 volumes:
