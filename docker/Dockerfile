@@ -8,10 +8,7 @@ RUN apk add --no-cache python3 make g++
 COPY package*.json ./
 
 # Установка всех зависимостей внутри контейнера
-RUN npm install -g --unsafe-perm
-
-# Устанавливаем права доступа к node_modules
-RUN chown -R node:node /app/node_modules
+RUN npm install
 
 # Копируем исходный код
 COPY . .
@@ -19,8 +16,6 @@ COPY . .
 # Устанавливаем права на выполнение node-pre-gyp
 RUN chmod +x /app/node_modules/.bin/node-pre-gyp
 
-# Выполняем npm rebuild от имени пользователя node
-USER node
 RUN npm rebuild bcrypt --build-from-source
 
 EXPOSE 5000
