@@ -41,7 +41,7 @@ build-push:
     - docker push $IMAGE
     - docker save $CI_REGISTRY_IMAGE/backend:latest > backend_latest.tar
 
-deploy-backend:
+deploy:
   stage: deploy
 
   before_script:
