@@ -38,13 +38,22 @@ build-push:
   script:
     - time docker build -t $IMAGE -f docker/Dockerfile .
     - docker push $IMAGE
+    - docker pull $CI_REGISTRY_IMAGE/backend:latest  # Ensure image is available locally
     - docker save $CI_REGISTRY_IMAGE/backend:latest > backend_latest.tar
+  
+  artifacts:
+    paths:
+      - backend_latest.tar
 
 deploy:
   stage: deploy
 
   needs:
     - build-push
+    
+  rules:
+    - if: "$CI_COMMIT_TAG != null"
+      when: manual
 
   before_script:
     - export IMAGE=$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
