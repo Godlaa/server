@@ -38,12 +38,6 @@ build-push:
   script:
     - time docker build -t $IMAGE -f docker/Dockerfile .
     - docker push $IMAGE
-    - docker pull $IMAGE  # Ensure image is available locally
-    - docker save $IMAGE > backend_latest.tar
-  
-  artifacts:
-    paths:
-      - backend_latest.tar
 
 deploy:
   stage: deploy
