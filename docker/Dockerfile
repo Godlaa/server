@@ -19,4 +19,4 @@ RUN chmod +x /app/node_modules/.bin/node-pre-gyp
 RUN npm rebuild bcrypt --build-from-source
 
 EXPOSE 5000
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "prod"]
